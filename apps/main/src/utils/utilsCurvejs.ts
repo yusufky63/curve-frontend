@@ -1,7 +1,6 @@
-import cloneDeep from 'lodash/cloneDeep'
-
 import { FORMAT_OPTIONS, formatNumber } from '@/ui/utils'
 import networks from '@/networks'
+import { CurveApiAdapter } from '@/utils/curveApiAdapter'
 
 export async function initCurveJs(chainId: ChainId, wallet: Wallet | null) {
   let curveApi: CurveApi | undefined
@@ -9,7 +8,7 @@ export async function initCurveJs(chainId: ChainId, wallet: Wallet | null) {
 
   try {
     if (networkId) {
-      curveApi = cloneDeep((await import('@curvefi/api')).default) as CurveApi
+      curveApi = new CurveApiAdapter();
 
       if (wallet) {
         await curveApi.init('Web3', { network: networkId, externalProvider: getWalletProvider(wallet) }, { chainId })
@@ -85,10 +84,6 @@ export function separateCrvProfit<T extends { symbol: string }>(tokensProfit: T[
   }
 
   return { crvProfit: null, tokensProfit }
-}
-
-export function isValidWalletAddress(address: string) {
-  return address && address.length === 42 && address.toLowerCase().startsWith('0x')
 }
 
 export function getImageBaseUrl(rChainId: ChainId) {

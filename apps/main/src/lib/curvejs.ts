@@ -131,19 +131,19 @@ const network = {
     ])
     return curve.getPoolList()
   },
-  fetchNetworkConfig: (curve: CurveApi) => ({
-    hasDepositAndStake: curve.hasDepositAndStake(),
-    hasRouter: curve.hasRouter(),
+  fetchNetworkConfig: async (curve: CurveApi) => ({
+    hasDepositAndStake: await curve.hasDepositAndStake(),
+    hasRouter: await curve.hasRouter(),
   }),
-  getTVL: (curve: CurveApi) => {
+  getTVL: async (curve: CurveApi) => {
     log('getChainTVL', curve.chainId)
     let api = curve as CurveApi
-    return api.getTVL()
+    return await api.getTVL()
   },
-  getVolume: (curve: CurveApi) => {
+  getVolume: async (curve: CurveApi) => {
     log('getChainVolume', curve.chainId)
     let api = curve as CurveApi
-    return api.getVolume()
+    return await api.getVolume()
   },
   getFailedFetching24hOldVprice: async () => {
     // TODO: Temporary code to determine if there is an issue with getting base APY from  Kava Api (https://api.curve.fi/api/getFactoryAPYs-kava)

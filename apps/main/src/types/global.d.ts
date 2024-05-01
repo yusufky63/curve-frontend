@@ -5,7 +5,7 @@ import type { PoolTemplate } from '@curvefi/api/lib/pools'
 import type { TooltipProps } from '@/ui/Tooltip/types'
 import type { Eip1193Provider, WalletState } from '@web3-onboard/core'
 import type { Locale } from '@/lib/i18n'
-import type curveApi from '@curvefi/api'
+import type { curveApi } from '@curvefi/api'
 
 import { ethers } from 'ethers'
 import React from 'react'
@@ -22,7 +22,16 @@ declare global {
   type Balances = IDict<string>
   type Balance = string | IDict<string>
 
-  type CurveApi = typeof curveApi & { chainId: IChainId }
+  type PromisifyFunction<Function extends (...any) => any> =
+    (...args: Parameters<Function>) => Promise<ReturnType<Function>>;
+
+  type PromisifyObject<Base extends { [key: string]: (...any) => any }> = {
+    [Key in keyof Base]: ReturnType<Base[Key]> extends Promise<any> ?
+      Base[Key] :
+      PromisifyFunction<Base[Key]>;
+  }
+
+  type CurveApi = PromisifyObject<typeof curveApi> & { chainId: IChainId }
   type ChainId = IChainId
   type NetworkEnum = INetworkName
 

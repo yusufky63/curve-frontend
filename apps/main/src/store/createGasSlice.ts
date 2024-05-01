@@ -62,7 +62,7 @@ const createGasSlice = (set: SetState<State>, get: GetState<State>): GasSlice =>
             parsedGasInfo = parseEthereumGasInfo(gasInfo, gas)
             const customFeeDataValues = getEthereumCustomFeeDataValues(gasInfo)
             if (customFeeDataValues) {
-              curve.setCustomFeeData(customFeeDataValues)
+              await curve.setCustomFeeData(customFeeDataValues)
             }
           }
         } else if (chainId === 137) {
@@ -75,7 +75,7 @@ const createGasSlice = (set: SetState<State>, get: GetState<State>): GasSlice =>
 
           // set curvejs's custom fee data for polygon
           if (fetchedData) {
-            curve.setCustomFeeData({
+            await curve.setCustomFeeData({
               maxFeePerGas: fetchedData.fast.maxFee,
               maxPriorityFeePerGas: fetchedData.fast.maxPriorityFee,
             })
@@ -91,7 +91,7 @@ const createGasSlice = (set: SetState<State>, get: GetState<State>): GasSlice =>
             if (parsedGasInfo && customFeeData) {
               parsedGasInfo.gasInfo.max = [gweiToWai(customFeeData.maxFeePerGas)]
               parsedGasInfo.gasInfo.priority = [gweiToWai(customFeeData.maxPriorityFeePerGas)]
-              curve.setCustomFeeData(customFeeData)
+              await curve.setCustomFeeData(customFeeData)
             }
           }
         } else if (chainId === 252 || chainId === 8453) {
@@ -102,7 +102,7 @@ const createGasSlice = (set: SetState<State>, get: GetState<State>): GasSlice =>
             parsedGasInfo = await parseGasInfo(curve, provider)
 
             if (parsedGasInfo) {
-              curve.setCustomFeeData({
+              await curve.setCustomFeeData({
                 maxFeePerGas: 0.1,
                 maxPriorityFeePerGas: 0.001,
               })
@@ -116,7 +116,7 @@ const createGasSlice = (set: SetState<State>, get: GetState<State>): GasSlice =>
             parsedGasInfo = await parseGasInfo(curve, provider)
 
             if (parsedGasInfo) {
-              curve.setCustomFeeData({
+              await curve.setCustomFeeData({
                 maxFeePerGas: 0.2,
                 maxPriorityFeePerGas: 0.001,
               })

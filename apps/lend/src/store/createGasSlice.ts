@@ -64,7 +64,7 @@ const createGasSlice = (set: SetState<State>, get: GetState<State>): GasSlice =>
             parsedGasInfo = parseEthereumGasInfo(gasInfo, gas)
             const customFeeDataValues = getEthereumCustomFeeDataValues(gasInfo)
             if (customFeeDataValues) {
-              curve.setCustomFeeData(customFeeDataValues)
+              await curve.setCustomFeeData(customFeeDataValues)
             }
           }
         } else if (chainId === 137) {
@@ -77,7 +77,7 @@ const createGasSlice = (set: SetState<State>, get: GetState<State>): GasSlice =>
 
           // set api custom fee data for polygon
           if (fetchedData) {
-            curve.setCustomFeeData({
+            await curve.setCustomFeeData({
               maxFeePerGas: fetchedData.fast.maxFee,
               maxPriorityFeePerGas: fetchedData.fast.maxPriorityFee,
             })
@@ -93,7 +93,7 @@ const createGasSlice = (set: SetState<State>, get: GetState<State>): GasSlice =>
             if (parsedGasInfo && customFeeData) {
               parsedGasInfo.gasInfo.max = [gweiToWai(customFeeData.maxFeePerGas)]
               parsedGasInfo.gasInfo.priority = [gweiToWai(customFeeData.maxPriorityFeePerGas)]
-              curve.setCustomFeeData(customFeeData)
+              await curve.setCustomFeeData(customFeeData)
             }
           }
         }

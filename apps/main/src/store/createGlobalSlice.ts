@@ -49,7 +49,7 @@ type GlobalState = {
 // prettier-ignore
 export interface GlobalSlice extends GlobalState {
   getNetworkConfigFromApi(chainId: ChainId | ''): NetworkConfigFromApi
-  setNetworkConfigFromApi(curve: CurveApi): void
+  setNetworkConfigFromApi(curve: CurveApi): Promise<void>
   setPageWidth: (pageWidthClassName: PageWidthClassName) => void
   setThemeType: (themeType: Theme) => void
   updateConnectState(status: ConnectState['status'], stage: ConnectState['stage'], options?: ConnectState['options']): void
@@ -108,9 +108,9 @@ const createGlobalSlice = (set: SetState<State>, get: GetState<State>) => ({
     }
     return resp
   },
-  setNetworkConfigFromApi: (curve: CurveApi) => {
+  setNetworkConfigFromApi: async (curve: CurveApi) => {
     const { chainId } = curve
-    const { hasDepositAndStake, hasRouter } = networks[chainId].api.network.fetchNetworkConfig(curve)
+    const { hasDepositAndStake, hasRouter } = await networks[chainId].api.network.fetchNetworkConfig(curve)
     set(
       produce((state: State) => {
         state.hasDepositAndStake[chainId] = hasDepositAndStake
@@ -186,7 +186,7 @@ const createGlobalSlice = (set: SetState<State>, get: GetState<State>) => ({
     }
 
     // update network settings from api
-    get().setNetworkConfigFromApi(curveApi)
+    await get().setNetworkConfigFromApi(curveApi)
     get().updateGlobalStoreByKey('curve', curveApi)
     get().updateGlobalStoreByKey('isLoadingCurve', false)
 

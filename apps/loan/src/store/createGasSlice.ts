@@ -60,7 +60,7 @@ const createGasSlice = (set: SetState<State>, get: GetState<State>) => ({
 
           const customFeeDataValues = getEthereumCustomFeeDataValues(gasInfo)
           if (customFeeDataValues) {
-            curve.setCustomFeeData(customFeeDataValues)
+            await curve.setCustomFeeData(customFeeDataValues)
           }
         } else {
           parsedGasInfo = await parseGasInfoFromRpcUrl(rpcUrl)

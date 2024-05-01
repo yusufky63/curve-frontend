@@ -234,7 +234,7 @@ const createPoolsSlice = (set: SetState<State>, get: GetState<State>): PoolsSlic
         ])
         const partialTokens = await get().tokens.setTokensMapper(chainId, partialPoolDatas)
 
-        if (curve.signerAddress) {
+        if (await curve.signerAddress) {
           get().userBalances.fetchUserBalancesByTokens(curve, partialTokens)
         }
 
@@ -881,8 +881,8 @@ async function getPools(
 
   for (const idx in poolList) {
     const poolId = poolList[idx]
-    const pool = curve.getPool(poolId) as Pool
-    const poolData = networks[chainId].api.pool.getPoolData(pool, chainId, poolsMapper[poolId])
+    const pool = await curve.getPool(poolId) as Pool
+    const poolData = await networks[chainId].api.pool.getPoolData(pool, chainId, poolsMapper[poolId])
     poolData.failedFetching24hOldVprice = failedFetching24hOldVprice
       ? failedFetching24hOldVprice[pool.address] ?? false
       : false

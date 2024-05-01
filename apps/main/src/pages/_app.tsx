@@ -59,6 +59,7 @@ function CurveApp({ Component }: AppProps) {
 
   const fetchPoolsVolumeTvl = useCallback(
     async (curve: CurveApi) => {
+      if (!poolDatas) return;
       const chainId = curve.chainId
       await Promise.all([fetchPoolsVolume(chainId, poolDatas), fetchPoolsTvl(curve, poolDatas)])
       setTokensMapper(chainId, poolDatas)
