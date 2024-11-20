@@ -25,12 +25,13 @@ const AddGaugeLink = ({
   const { setCurrentPoolType, setSidechainGauge, setPoolAddress, setLpTokenAddress } = useStore(
     (state) => state.deployGauge
   )
+  const { isLite } = useStore((state) => state.networks.networks[chainId])
 
   const params = useParams()
   const navigate = useNavigate()
 
   const handleClick = () => {
-    if (chainId === 1) {
+    if (chainId === 1 || isLite) {
       setSidechainGauge(false)
       setPoolAddress(address)
     } else {
